@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      *{ margin: 0px; padding: 0px; }
+      .closeScrollTop{
+        top: 0% !important;
+      }
+      .closeScrollBottom{
+        top: 100% !important;
+        bottom: 0% !important;
+      }
+      .showBox{
+        width: 100% !important;
+        height: 100% !important;
+        left: 0% !important;
+        top: 0% !important;
+      }
+      .button{
+        padding: 10px 20px;background: #000;color: #fff;border: 1px solid #000; margin-bottom: 100px; display: -webkit-box;
+      }
+      #div{
+        background-color: rgba(33,33,33, .48);
+        position: fixed;
+        transition: 0.6s;
+        -webkit-transition: 0.6s;
+        -o-transition: 0.6s;
+        top: 0%;
+        height: 0px;
+        opacity: 0;
+        overflow: hidden;
+      }
+      .boxElement{
+        min-width: 240px;
+        max-width: 80%;
+        max-height: 80%;
+        position: absolute;
+        opacity: 0;
+        top: 10px;
+        overflow: auto;
+        box-shadow: 0 7px 8px -4px rgba(0,0,0,.2),0 13px 19px 2px rgba(0,0,0,.14),0 5px 24px 4px rgba(0,0,0,.12);
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        transition: 0.6s;
+        -webkit-transition: 0.6s;
+        -o-transition: 0.6s;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: rgb(255,255,255);
+      }
+
+    </style>
+  </head>
+  <body id="flex">
+
+      <div id="wrapper" style="width: 100px; margin: 0px auto;">
+        <button onclick="openBox(1, 'http://img2.fotoalbum.virgilio.it/v/www1-3/176/176513/304872/IMG_0880-vi.jpg');" id="buttonID-1" class="button">Testtt</button>
+        <button onclick="openBox(2, 'http://www.mountainguides.com/photos/everest-south/c2_2011b.jpg');" id="buttonID-2" class="button">Testtt</button>
+        <button onclick="openBox(3, 'https://upload.wikimedia.org/wikipedia/commons/b/bf/Blue_Tiger_Im_IMG_9450.jpg');" id="buttonID-3" class="button">Testtt</button>
+        <button onclick="openBox(4, 'https://upload.wikimedia.org/wikipedia/commons/b/bf/Blue_Tiger_Im_IMG_9450.jpg');" id="buttonID-4" class="button">Testtt</button>
+        <button onclick="openBox(5, 'https://upload.wikimedia.org/wikipedia/commons/b/bf/Blue_Tiger_Im_IMG_9450.jpg');" id="buttonID-5" class="button">Testtt</button>
+        <button onclick="openBox(6, 'https://upload.wikimedia.org/wikipedia/commons/b/bf/Blue_Tiger_Im_IMG_9450.jpg');" id="buttonID-6" class="button">Testtt</button>
+        <button onclick="openBox(7, 'https://upload.wikimedia.org/wikipedia/commons/b/bf/Blue_Tiger_Im_IMG_9450.jpg');" id="buttonID-7" class="button">Testtt</button>
+        <button onclick="openBox(8, 'https://upload.wikimedia.org/wikipedia/commons/b/bf/Blue_Tiger_Im_IMG_9450.jpg');" id="buttonID-8" class="button">Testtt</button>
+      </div>
+
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+      function openBox(idButton, imgSrc){
+          var elementButtonID = document.getElementById("buttonID-" + idButton);
+          var x = $("#buttonID-" + idButton).position().left;
+          var sp = getPosition(document.getElementById("buttonID-" + idButton));
+          var y = sp;//event.clientY;
+
+        if(document.getElementById("div") == null){
+
+          var elementX = document.createElement("div");
+          elementX.setAttribute("id", "div");
+          elementX.setAttribute("class", "boxAddi");
+          elementX.setAttribute("onClick", "closeTab("+idButton+");");
+          document.body.appendChild(elementX);
+
+
+      /*style box*/
+          document.getElementById("div").style.left = x + "px";
+          document.getElementById("div").style.top = y + "px";
+          document.getElementById("div").style.width = elementButtonID.clientWidth + "px";
+          document.getElementById("div").style.height = elementButtonID.clientHeight + "px";
+          document.getElementById("flex").style.overflow = "hidden";
+          $("#div").addClass('showBox');;
+      /*js Show*/
+          $("#div").fadeIn('3000', function(){
+            document.getElementById("div").style.opacity = "1";
+          });
+          console.log("x: "+x +" y:" + y);
+        }
+
+      }
+
+      function closeTab(butID){
+        $("#div").removeClass('showBox');
+        $("#div").fadeOut('3000', function(){
+          var box = document.getElementById("div");
+          box.parentNode.removeChild(box);
+          document.getElementById("flex").style.overflow = "auto";
+        });
+      }
+      function getPosition(element) {
+        var yPosition = 0;
+
+        while(element) {
+            yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+            element = element.offsetParent;
+        }
+        return yPosition ;
+    }
+
+    $(window).bind('mousewheel', function(event) {
+      if (event.originalEvent.wheelDelta >= 0) {  //scroll up
+          if(document.getElementById("div") != null){
+            $("#div").removeClass('showBox');
+            $("#div").addClass('closeScrollBottom');
+
+            $("#div").fadeOut('3000', function(){
+              if(document.getElementById("div") != null){
+                var box = document.getElementById("div");
+                box.parentNode.removeChild(box);
+              }
+            });
+            document.getElementById("flex").style.overflow = "auto";
+
+            console.log("Top");
+          }
+      }else{  //scroll down
+        if(document.getElementById("div") != null){
+          $("#div").removeClass('showBox');
+          $("#div").addClass('closeScrollTop');
+
+          $("#div").fadeOut('3000', function(){
+            if(document.getElementById("div") != null){
+              var box = document.getElementById("div");
+              box.parentNode.removeChild(box);
+            }
+          });
+          document.getElementById("flex").style.overflow = "auto";
+
+          console.log("Down");
+        }
+      }
+    });
+    </script>
+  </body>
+</html>
